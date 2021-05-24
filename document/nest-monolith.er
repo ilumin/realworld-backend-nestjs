@@ -1,0 +1,51 @@
+[Users]
+  *id
+  username
+  password
+  email
+  bio 
+  image 
+
+[Articles]
+  *id
+  +slug
+  +author
+  title
+  description
+  body
+  created_at
+  created_by
+  updated_at
+  updated_by
+  favotirs_count
+
+[Tags]
+  *id 
+  name
+
+[Article_Tag]
+  *id 
+  +article
+  +tag
+
+[Article_Favorit]
+  *id 
+  +article 
+  +favorited_by
+
+[Comments]
+  *id 
+  +author
+  +article
+  body 
+  created_at
+  created_by
+  updated_at
+  updated_by
+
+Articles 1--* Article_Tag
+Tags 1--* Article_Tag
+Articles 1--* Comments
+Articles 1--* Article_Favorit
+Users 1--* Article_Favorit
+Articles 1--1 Users
