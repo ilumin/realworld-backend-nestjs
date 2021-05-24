@@ -10,13 +10,27 @@ import {
 import { Article, Prisma } from '@prisma/client'
 import { ArticlesService } from './articles.service'
 
+type ArticleCreateDto = {
+  article: {
+    title: string
+    description: string
+    body: string
+    tagList: string[]
+  }
+}
+
 @Controller('articles')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
   @Post()
-  async create(@Body() data: Prisma.ArticleCreateInput): Promise<Article> {
-    return this.articlesService.create(data)
+  async create(@Body() { article }: ArticleCreateDto): Promise<Article> {
+    const user = {}
+
+    return this.articlesService.create({
+      article,
+      user,
+    })
   }
 
   @Get()

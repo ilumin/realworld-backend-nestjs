@@ -7,7 +7,11 @@ import { PrismaService } from '../services'
 export class ArticlesService {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: Prisma.ArticleCreateInput): Promise<Article> {
+  async create({ article, user }): Promise<Article> {
+    const data = {
+      ...article,
+      // author: user,
+    }
     return this.prisma.article.create({
       data,
     })
