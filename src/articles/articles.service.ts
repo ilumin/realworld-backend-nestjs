@@ -1,26 +1,41 @@
 import { Injectable } from '@nestjs/common'
-import { CreateArticleDto } from './dto/create-article.dto'
-import { UpdateArticleDto } from './dto/update-article.dto'
+import { Article, Prisma } from '@prisma/client'
+
+import { PrismaService } from '../services'
 
 @Injectable()
 export class ArticlesService {
-  create(createArticleDto: CreateArticleDto) {
-    return 'This action adds a new article'
+  constructor(private prisma: PrismaService) {}
+
+  async create(data: Prisma.ArticleCreateInput): Promise<Article> {
+    return this.prisma.article.create({
+      data,
+    })
   }
 
-  findAll() {
-    return `This action returns all articles`
+  async findAll(): Promise<Article[]> {
+    return this.prisma.article.findMany()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} article`
+  async findOne(where: Prisma.ArticleWhereUniqueInput): Promise<Article> {
+    return this.prisma.article.findUnique({
+      where,
+    })
   }
 
-  update(id: number, updateArticleDto: UpdateArticleDto) {
-    return `This action updates a #${id} article`
+  async update(
+    where: Prisma.ArticleWhereUniqueInput,
+    data: Prisma.ArticleUpdateInput
+  ): Promise<Article> {
+    return this.prisma.article.update({
+      data,
+      where,
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} article`
+  async remove(where: Prisma.ArticleWhereUniqueInput): Promise<Article> {
+    return this.prisma.article.delete({
+      where,
+    })
   }
 }

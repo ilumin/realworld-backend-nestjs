@@ -7,36 +7,38 @@ import {
   Param,
   Delete,
 } from '@nestjs/common'
+import { Article, Prisma } from '@prisma/client'
 import { ArticlesService } from './articles.service'
-import { CreateArticleDto } from './dto/create-article.dto'
-import { UpdateArticleDto } from './dto/update-article.dto'
 
 @Controller('articles')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
   @Post()
-  create(@Body() createArticleDto: CreateArticleDto) {
-    return this.articlesService.create(createArticleDto)
+  async create(@Body() data: Prisma.ArticleCreateInput): Promise<Article> {
+    return this.articlesService.create(data)
   }
 
   @Get()
-  findAll() {
+  async findAll(): Promise<Article[]> {
     return this.articlesService.findAll()
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.articlesService.findOne(+id)
+  @Get(':slug')
+  async findOne(@Param('slug') slug: string): Promise<Article> {
+    return this.articlesService.findOne({ slug })
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateArticleDto: UpdateArticleDto) {
-    return this.articlesService.update(+id, updateArticleDto)
+  @Patch(':slug')
+  async update(
+    @Param('slug') slug: string,
+    @Body() updateArticleDto: Prisma.ArticleUpdateInput
+  ): Promise<Article> {
+    return this.articlesService.update({ slug }, updateArticleDto)
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.articlesService.remove(+id)
+  @Delete(':slug')
+  async remove(@Param('slug') slug: string): Promise<Article> {
+    return this.articlesService.remove({ slug })
   }
 }
